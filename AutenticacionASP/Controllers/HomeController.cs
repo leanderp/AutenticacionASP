@@ -31,52 +31,50 @@ namespace AutenticacionASP.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             #region
-            // Manejando roles
-            if (User.Identity.IsAuthenticated)
-            {
-                ClaimsPrincipal getUser = this.User;
-                var id = getUser.FindFirst(ClaimTypes.NameIdentifier).Value; // Busca el id
-                var usuario = await _userManager.FindByIdAsync(id); // trae el usuario
+            //Manejando roles
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    ClaimsPrincipal getUser = this.User;
+            //    var id = getUser.FindFirst(ClaimTypes.NameIdentifier).Value; // Busca el id
+            //    var usuario = await _userManager.FindByIdAsync(id); // trae el usuario
 
-                //Crear rol
-                bool x = await _roleManager.RoleExistsAsync("Admin");
-                if (!x)
-                {
-                    var rolAdmin = new IdentityRole();
-                    rolAdmin.Name = "Admin";
-                    await _roleManager.CreateAsync(rolAdmin);
-                }
+            //    //Crear rol
+            //    bool x = await _roleManager.RoleExistsAsync("Admin");
+            //    if (!x)
+            //    {
+            //        var rolAdmin = new IdentityRole();
+            //        rolAdmin.Name = "Admin";
+            //        await _roleManager.CreateAsync(rolAdmin);
+            //    }
 
-                bool y = await _roleManager.RoleExistsAsync("ApruebaPrestamos");
-                if (!y)
-                {
-                    var rolAdmin = new IdentityRole();
-                    rolAdmin.Name = "ApruebaPrestamos";
-                    await _roleManager.CreateAsync(rolAdmin);
-                }
+                //bool y = await _roleManager.RoleExistsAsync("ApruebaPrestamos");
+                //if (!y)
+                //{
+                //    var rolAdmin = new IdentityRole();
+                //    rolAdmin.Name = "ApruebaPrestamos";
+                //    await _roleManager.CreateAsync(rolAdmin);
+                //}
 
                 //Agregar usuario al rol
-                var agregarRol = await _userManager.AddToRoleAsync(usuario, "Admin");
-                var agregarRol2 = await _userManager.AddToRoleAsync(usuario, "ApruebaPrestamos");
+                //var agregarRol = await _userManager.AddToRoleAsync(usuario, "Admin");
+                //var agregarRol2 = await _userManager.AddToRoleAsync(usuario, "ApruebaPrestamos");
 
                 // Usuario esta en rol?
-                var usuarioEsEnRol = await _userManager.IsInRoleAsync(usuario, "Admin"); //true
-                var usuarioEsEnRol2 = await _userManager.IsInRoleAsync(usuario, "ApruebaPrestamos"); //false
-                var usuarioEsEnRol3 = await _userManager.IsInRoleAsync(usuario, "Vendedores"); //false
+                //var usuarioEsEnRol = await _userManager.IsInRoleAsync(usuario, "Admin"); //true
+                //var usuarioEsEnRol2 = await _userManager.IsInRoleAsync(usuario, "ApruebaPrestamos"); //false
+                //var usuarioEsEnRol3 = await _userManager.IsInRoleAsync(usuario, "Vendedores"); //false
 
                 // Roles del usuario
-                var roles = await _userManager.GetRolesAsync(usuario);
+                //var roles = await _userManager.GetRolesAsync(usuario);
 
                 // Remover a usuario de Rol
-                var removerRol = await _userManager.RemoveFromRoleAsync(usuario, "ApruebaPrestamos");
+                //var removerRol = await _userManager.RemoveFromRoleAsync(usuario, "Admin");
 
                 // Borrar rol
-                var rolVendedor = await _roleManager.FindByNameAsync("ApruebaPrestamos");
-                await _roleManager.DeleteAsync(rolVendedor);
-            }
+                //var rolVendedor = await _roleManager.FindByNameAsync("ApruebaPrestamos");
+                //await _roleManager.DeleteAsync(rolVendedor);
+            //}
             #endregion
-
-
             #region
             // Manejando los Usuarios
             //var estaAutenticado = User.Identity.IsAuthenticated;

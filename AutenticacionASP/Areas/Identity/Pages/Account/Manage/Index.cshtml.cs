@@ -36,18 +36,24 @@ namespace AutenticacionASP.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [StringLength(120, ErrorMessage = "Debe contener un maximo de 120 caracteres")]
+            [Display(Name = "Lugar de Nacimiento")]
+            public string LugarDeNacimiento { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var lugarNacimiento = user.LugarDeNacimiento;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                LugarDeNacimiento = lugarNacimiento
             };
         }
 
@@ -84,6 +90,17 @@ namespace AutenticacionASP.Areas.Identity.Pages.Account.Manage
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
+                    return RedirectToPage();
+                }
+            }
+
+            if (Input.LugarDeNacimiento != user.LugarDeNacimiento)
+            {
+                user.LugarDeNacimiento = Input.LugarDeNacimiento;
+                var setLugarNacimiento = await _userManager.UpdateAsync(user);
+                if (!setLugarNacimiento.Succeeded)
+                {
+                    StatusMessage = "Hubo un error actualizando el lugar de Nacimiento.";
                     return RedirectToPage();
                 }
             }
