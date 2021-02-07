@@ -28,7 +28,7 @@ namespace AutenticacionASP.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
             #region
             //Manejando roles
@@ -47,32 +47,32 @@ namespace AutenticacionASP.Controllers
             //        await _roleManager.CreateAsync(rolAdmin);
             //    }
 
-                //bool y = await _roleManager.RoleExistsAsync("ApruebaPrestamos");
-                //if (!y)
-                //{
-                //    var rolAdmin = new IdentityRole();
-                //    rolAdmin.Name = "ApruebaPrestamos";
-                //    await _roleManager.CreateAsync(rolAdmin);
-                //}
+            //bool y = await _roleManager.RoleExistsAsync("ApruebaPrestamos");
+            //if (!y)
+            //{
+            //    var rolAdmin = new IdentityRole();
+            //    rolAdmin.Name = "ApruebaPrestamos";
+            //    await _roleManager.CreateAsync(rolAdmin);
+            //}
 
-                //Agregar usuario al rol
-                //var agregarRol = await _userManager.AddToRoleAsync(usuario, "Admin");
-                //var agregarRol2 = await _userManager.AddToRoleAsync(usuario, "ApruebaPrestamos");
+            //Agregar usuario al rol
+            //var agregarRol = await _userManager.AddToRoleAsync(usuario, "Admin");
+            //var agregarRol2 = await _userManager.AddToRoleAsync(usuario, "ApruebaPrestamos");
 
-                // Usuario esta en rol?
-                //var usuarioEsEnRol = await _userManager.IsInRoleAsync(usuario, "Admin"); //true
-                //var usuarioEsEnRol2 = await _userManager.IsInRoleAsync(usuario, "ApruebaPrestamos"); //false
-                //var usuarioEsEnRol3 = await _userManager.IsInRoleAsync(usuario, "Vendedores"); //false
+            // Usuario esta en rol?
+            //var usuarioEsEnRol = await _userManager.IsInRoleAsync(usuario, "Admin"); //true
+            //var usuarioEsEnRol2 = await _userManager.IsInRoleAsync(usuario, "ApruebaPrestamos"); //false
+            //var usuarioEsEnRol3 = await _userManager.IsInRoleAsync(usuario, "Vendedores"); //false
 
-                // Roles del usuario
-                //var roles = await _userManager.GetRolesAsync(usuario);
+            // Roles del usuario
+            //var roles = await _userManager.GetRolesAsync(usuario);
 
-                // Remover a usuario de Rol
-                //var removerRol = await _userManager.RemoveFromRoleAsync(usuario, "Admin");
+            // Remover a usuario de Rol
+            //var removerRol = await _userManager.RemoveFromRoleAsync(usuario, "Admin");
 
-                // Borrar rol
-                //var rolVendedor = await _roleManager.FindByNameAsync("ApruebaPrestamos");
-                //await _roleManager.DeleteAsync(rolVendedor);
+            // Borrar rol
+            //var rolVendedor = await _roleManager.FindByNameAsync("ApruebaPrestamos");
+            //await _roleManager.DeleteAsync(rolVendedor);
             //}
             #endregion
             #region
