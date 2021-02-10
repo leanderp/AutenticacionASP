@@ -1,9 +1,14 @@
-﻿using AutenticacionASP.Data;
+﻿using AutenticacionASP.Areas.Identity.Pages.Account;
+using AutenticacionASP.Data;
 using AutenticacionASP.Models;
+using AutenticacionASP.Models.ServiceMessage;
+using AutenticacionASP.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,11 +25,16 @@ namespace AutenticacionASP.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+        const string SessionCode = "_Name";
+        const string SessionEmail = "_Email";
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         [AllowAnonymous]
@@ -109,5 +119,93 @@ namespace AutenticacionASP.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult LoginSMS()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LoginSMS(GetLogin loginUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var usuario = _context.Users.Where(x => x.Email == loginUser.UserName).FirstOrDefault();
+                if (usuario != null)
+                {
+                    if (usuario.PhoneNumber != null)
+                    {
+                        Random random = new Random();
+                        var telefono = usuario.PhoneNumber;
+                        var code = random.Next(100000, 999999);
+                        TwilioHelper twilio = new TwilioHelper();
+                        twilio.SendSMSMessage(telefono, code.ToString());
+                        HttpContext.Session.SetString(SessionEmail, usuario.Email);
+                        HttpContext.Session.SetString(SessionCode, code.ToString());
+                        return RedirectToAction("Login");
+                    }
+                    else
+                    {
+                        ViewBag.Mensaje = "No es posible que se logue por este medio. Tiene que registrar numero de telefono para habilitar esta opcion";
+                        return View();
+                    }
+                }   
+            }
+            ViewBag.Mensaje = "Usuario invalido";
+            return View();
+        }
+
+
+        public IActionResult Login()
+        {
+            var email = HttpContext.Session.GetString(SessionEmail);
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginAsync(AutenticacionASP.Services.LoginModel loginUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var code = HttpContext.Session.GetString(SessionCode);
+                var email = HttpContext.Session.GetString(SessionEmail);
+                if (email != loginUser.Email)
+                {
+                    ViewBag.ErrorEmail = "Email incorrecto";
+                    return View();
+                }
+                if (code != loginUser.Code)
+                {
+                    ViewBag.ErrorCodigo = "Codigo de autenticacion invalido";
+                    return View();
+                }
+
+                var usuario = _context.Users.Where(x => x.Email == loginUser.Email).FirstOrDefault();
+                if (usuario!= null)
+                {
+                    var login = await _signInManager.PasswordSignInAsync(usuario, loginUser.Password, true, false);
+                    if (login.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Error = "Contraseña invalida";
+                        return View();
+                    }
+                }
+                else
+                {
+                    ViewBag.Error = "Usuario invalido";
+                    return View();
+                }
+                
+            }
+            return View();
+        }
+
     }
 }

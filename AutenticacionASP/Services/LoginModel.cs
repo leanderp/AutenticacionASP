@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutenticacionASP.Models
+namespace AutenticacionASP.Services
 {
-    public class LoginSMS
+    public class LoginModel
     {
         [Required]
-        public string UserName { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        [StringLength(6,MinimumLength =6)]
+        public string Code { get; set; }
+
+        [Display(Name = "Remember me?")]
+        public bool RememberMe { get; set; }
     }
 }

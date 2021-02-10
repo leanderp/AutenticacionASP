@@ -36,6 +36,10 @@ namespace AutenticacionASP
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);//You can set Time   
+            });
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -73,6 +77,8 @@ namespace AutenticacionASP
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

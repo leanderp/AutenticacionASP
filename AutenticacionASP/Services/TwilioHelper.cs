@@ -16,14 +16,14 @@ namespace AutenticacionASP.Models.ServiceMessage
                         _smsSettings.Twilio_Auth_TOKEN
                     );
 
-            if (messageToSend.Length > 160)
-                messageToSend = messageToSend.Substring(0, 160);
+            if (messageToSend.Length > 6)
+                messageToSend = messageToSend.Substring(0, 6);
 
             var message = MessageResource.Create(
                 from: new PhoneNumber(_smsSettings.Twilio_Phone_Number),
-                to: new PhoneNumber("+51" + toMobilePhone),
+                to: new PhoneNumber("+58" + toMobilePhone),
                 body: messageToSend
-                ); ;
+                );
 
             return message.Sid;
         }

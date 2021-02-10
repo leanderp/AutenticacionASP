@@ -1,0 +1,39 @@
+﻿@model AutenticacionASP.Services.GetLogin
+@{
+    ViewData["Title"] = "LoginSMS";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<span>@ViewBag.Mensaje</span>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form asp-controller="Home" asp-action="LoginSMS" method="post">
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a id="forgot-password" asp-page="">Forgot your password?</a>
+                    </p>
+                    <p>
+                        <a asp-page="">Register as a new user</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
