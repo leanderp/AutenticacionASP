@@ -50,4 +50,14 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/QrCodeJS/qrcode.js"></script>
+<script>
+    new QRCode(document.getElementById("qrCode"),
+        {
+            text: "@Html.Raw(Model.AuthenticatorUri)",
+            width: 250,
+            heigth: 250
+        }
+    )
+</script>
 }
