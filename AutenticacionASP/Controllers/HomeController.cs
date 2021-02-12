@@ -46,8 +46,6 @@ namespace AutenticacionASP.Controllers
             //var hash = Hash.Create(message, salt);
             //var validacion = Hash.Validate(message, salt, hash);
             #endregion
-
-
             #region
             //Manejando roles
             //if (User.Identity.IsAuthenticated)
