@@ -1,21 +1,19 @@
-﻿using AutenticacionASP.Areas.Identity.Pages.Account;
-using AutenticacionASP.Data;
+﻿using AutenticacionASP.Data;
 using AutenticacionASP.Models;
 using AutenticacionASP.Models.ServiceMessage;
 using AutenticacionASP.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
+
 
 namespace AutenticacionASP.Controllers
 {
@@ -40,6 +38,16 @@ namespace AutenticacionASP.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            #region
+            //var message = "password";
+            //var salt = Salt.Create();
+
+            //// Act  
+            //var hash = Hash.Create(message, salt);
+            //var validacion = Hash.Validate(message, salt, hash);
+            #endregion
+
+
             #region
             //Manejando roles
             //if (User.Identity.IsAuthenticated)
