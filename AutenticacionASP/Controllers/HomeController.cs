@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -24,15 +25,17 @@ namespace AutenticacionASP.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
         const string SessionCode = "_Name";
         const string SessionEmail = "_Email";
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [AllowAnonymous]
@@ -145,7 +148,7 @@ namespace AutenticacionASP.Controllers
                         Random random = new Random();
                         var telefono = usuario.PhoneNumber;
                         var code = random.Next(100000, 999999);
-                        TwilioHelper twilio = new TwilioHelper();
+                        TwilioHelper twilio = new TwilioHelper(_configuration);
                         twilio.SendSMSMessage(telefono, code.ToString());
                         HttpContext.Session.SetString(SessionEmail, usuario.Email);
                         HttpContext.Session.SetString(SessionCode, code.ToString());
